@@ -1,5 +1,6 @@
 const express = require("express")
 const Discord = require("discord.js")
+const store = require("data-store")({ path: process.cwd() + "/role-data.json" })
 require("dotenv").config()
 
 const client = new Discord.Client()
