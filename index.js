@@ -60,6 +60,7 @@ client.on ("message", message => {
 		else if (locType=="vc") {
 			if (specifiedVC == undefined) result = {success: false, reason: "The specified voice channel does not exist."}
 			else if (specifiedVC.guild.id != message.guild.id) result = {success: false, reason: "The specified voice channel is not this server."}
+			else if (specifiedVC.type != "voice") result = {success: false, reason: "The specified channel is not a voice channel."}
 			else result = {success: true}
 		}
 		else result = {success: true}
