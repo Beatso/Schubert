@@ -114,7 +114,6 @@ client.on("voiceStateUpdate", (oldState, newState) => {
 		const channel = oldState.channel
 		
 		if (locations.includes(channel.id)) {
-			console.log("remove channel")
 			// use a channel location
 			const roleID = roleData[channel.id]
 			const role = channel.guild.roles.cache.get(roleID)
@@ -122,19 +121,17 @@ client.on("voiceStateUpdate", (oldState, newState) => {
 		}
 	
 		if (locations.includes(channel.guild.id)) {
-			console.log("remove guild")
 			// use a guild location
 			const roleID = roleData[channel.guild.id]
 			const role = channel.guild.roles.cache.get(roleID)
 			newState.member.roles.remove(role)
 		}
 	}
-	
+
 	if (join) {
 		const channel = newState.channel
 
 		if (locations.includes(channel.id)) {
-			console.log("add channel")
 			// use a channel location
 			const roleID = roleData[channel.id]
 			const role = channel.guild.roles.cache.get(roleID)
@@ -142,7 +139,6 @@ client.on("voiceStateUpdate", (oldState, newState) => {
 		}
 	
 		if (locations.includes(channel.guild.id)) {
-			console.log("add guild")
 			// use a guild location
 			const roleID = roleData[channel.guild.id]
 			const role = channel.guild.roles.cache.get(roleID)
