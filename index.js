@@ -90,6 +90,40 @@ client.on ("message", message => {
 
 })
 
+// detect when a member joins or leaves a voice channel, and give them the role if applicable
+client.on("voiceStateUpdate", (oldState, newState) => {
+
+	if (oldState.channelID!=null && newState.channelID==null) {
+		action = "leave"
+		channel = oldState.channel
+	}
+	else if (oldState.channelID==null && newState.channelID!=null) {
+		action = "join"
+		channel = newState.channel
+	}
+	else return
+
+	const roleData = vcrolestore.get()
+	const locations = Object.keys(roleData)
+
+	if (locations.includes(channel.id)) {
+		// use a channel location
+		const roleID = roleData[channel.id]
+		const role = channel.guild.roles.cache.get(roleID)
+		if (action == "join") newState.member.roles.add(role)
+		else if (action == "leave") newState.member.roles.remove(role)
+	}
+
+	if (locations.includes(channel.guild.id)) {
+		// use a guild location
+		const roleID = roleData[channel.guild.id]
+		const role = channel.guild.roles.cache.get(roleID)
+		if (action == "join") newState.member.roles.add(role)
+		else if (action == "leave") newState.member.roles.remove(role)
+	}
+})
+
+
 // webserver to keep alive
 const server = express()
 server.all("/keepalive", (req,res) => res.send("Bot woken"))
