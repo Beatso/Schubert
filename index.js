@@ -95,32 +95,59 @@ client.on ("message", message => {
 client.on("voiceStateUpdate", (oldState, newState) => {
 
 	if (oldState.channelID!=null && newState.channelID==null) {
-		action = "leave"
-		channel = oldState.channel
+		join = false
+		leave = true
 	}
 	else if (oldState.channelID==null && newState.channelID!=null) {
-		action = "join"
-		channel = newState.channel
+		join = true
+		leave = false
+	} else if (oldState.channelID!=null && newState.channelID!=null && oldState.channelID!=newState.channelID) {
+		join = true
+		leave = true
 	}
 	else return
 
 	const roleData = vcrolestore.get()
 	const locations = Object.keys(roleData)
 
-	if (locations.includes(channel.id)) {
-		// use a channel location
-		const roleID = roleData[channel.id]
-		const role = channel.guild.roles.cache.get(roleID)
-		if (action == "join") newState.member.roles.add(role)
-		else if (action == "leave") newState.member.roles.remove(role)
+	if (leave) {
+		const channel = oldState.channel
+		
+		if (locations.includes(channel.id)) {
+			console.log("remove channel")
+			// use a channel location
+			const roleID = roleData[channel.id]
+			const role = channel.guild.roles.cache.get(roleID)
+			newState.member.roles.remove(role)
+		}
+	
+		if (locations.includes(channel.guild.id)) {
+			console.log("remove guild")
+			// use a guild location
+			const roleID = roleData[channel.guild.id]
+			const role = channel.guild.roles.cache.get(roleID)
+			newState.member.roles.remove(role)
+		}
 	}
+	
+	if (join) {
+		const channel = newState.channel
 
-	if (locations.includes(channel.guild.id)) {
-		// use a guild location
-		const roleID = roleData[channel.guild.id]
-		const role = channel.guild.roles.cache.get(roleID)
-		if (action == "join") newState.member.roles.add(role)
-		else if (action == "leave") newState.member.roles.remove(role)
+		if (locations.includes(channel.id)) {
+			console.log("add channel")
+			// use a channel location
+			const roleID = roleData[channel.id]
+			const role = channel.guild.roles.cache.get(roleID)
+			newState.member.roles.add(role)
+		}
+	
+		if (locations.includes(channel.guild.id)) {
+			console.log("add guild")
+			// use a guild location
+			const roleID = roleData[channel.guild.id]
+			const role = channel.guild.roles.cache.get(roleID)
+			newState.member.roles.add(role)
+		}
 	}
 })
 
