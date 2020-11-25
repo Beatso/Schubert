@@ -1,9 +1,11 @@
 const express = require("express")
 const Discord = require("discord.js")
 const vcrolestore = require("data-store")({ path: process.cwd() + "/vcrole.json" })
+const Database = require("@replit/database")
 require("dotenv").config()
 
 const client = new Discord.Client()
+const vcroledb = new Database()
 
 client.once ("ready", _ => {
 	console.log("bot running"),
@@ -46,7 +48,8 @@ client.on ("message", message => {
 			locID = message.guild.id
 		}
 
-		if (roleID=="clear") specifiedRole = message.guild.roles.cache.get(vcrolestore.get(locID))
+		// if (roleID=="clear") specifiedRole = message.guild.roles.cache.get(vcrolestore.get(locID))
+		if (roleID=="clear") vcroledb.get(locID).then(value => specifiedRole = message.guild.roles.cache.get(value))
 		else specifiedRole = message.guild.roles.cache.get(roleID)
 		const specifiedVC = client.channels.cache.get(args[1])
 	
@@ -71,10 +74,12 @@ client.on ("message", message => {
 			// store the given info and tell the user it succeeded
 
 			if (roleID=="clear") {
-				vcrolestore.del(locID)
+				// vcrolestore.del(locID)
+				vcroledb.delete(locID)
 				resultMsg = `Voice channel role cleared successfully`
 			} else {
-				vcrolestore.set(locID, roleID)
+				// vcrolestore.set(locID, roleID)
+				vcroledb.set(locID, roleID)
 				resultMsg = `Voice channel role set successfully to \`${specifiedRole.name}\``
 			}
 		
@@ -107,22 +112,25 @@ client.on("voiceStateUpdate", (oldState, newState) => {
 	}
 	else return
 
-	const roleData = vcrolestore.get()
-	const locations = Object.keys(roleData)
+	// const roleData = vcrolestore.get()
+	// const locations = Object.keys(roleData)
+	vcroledb.list().then(keys => locations = keys)
 
 	if (leave) {
 		const channel = oldState.channel
 		
 		if (locations.includes(channel.id)) {
 			// use a channel location
-			const roleID = roleData[channel.id]
+			// const roleID = roleData[channel.id]
+			vcroledb.get(channel.id).then(id => roleID = id)
 			const role = channel.guild.roles.cache.get(roleID)
 			newState.member.roles.remove(role)
 		}
 	
 		if (locations.includes(channel.guild.id)) {
 			// use a guild location
-			const roleID = roleData[channel.guild.id]
+			// const roleID = roleData[channel.guild.id]
+			vcroledb.get(channel.guild.id).then(id => roleID = id)
 			const role = channel.guild.roles.cache.get(roleID)
 			newState.member.roles.remove(role)
 		}
@@ -133,14 +141,16 @@ client.on("voiceStateUpdate", (oldState, newState) => {
 
 		if (locations.includes(channel.id)) {
 			// use a channel location
-			const roleID = roleData[channel.id]
+			// const roleID = roleData[channel.id]
+			vcroledb.get(channel.id).then(id => roleID = id)
 			const role = channel.guild.roles.cache.get(roleID)
 			newState.member.roles.add(role)
 		}
 	
 		if (locations.includes(channel.guild.id)) {
 			// use a guild location
-			const roleID = roleData[channel.guild.id]
+			// const roleID = roleData[channel.guild.id]
+			vcroledb.get(channel.guild.id).then(id => roleID = id)
 			const role = channel.guild.roles.cache.get(roleID)
 			newState.member.roles.add(role)
 		}
