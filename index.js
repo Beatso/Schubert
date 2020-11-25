@@ -1,6 +1,5 @@
 const express = require("express")
 const Discord = require("discord.js")
-const vcrolestore = require("data-store")({ path: process.cwd() + "/vcrole.json" })
 const Database = require("@replit/database")
 require("dotenv").config()
 
@@ -48,7 +47,6 @@ client.on ("message", message => {
 			locID = message.guild.id
 		}
 
-		// if (roleID=="clear") specifiedRole = message.guild.roles.cache.get(vcrolestore.get(locID))
 		if (roleID=="clear") vcroledb.get(locID).then(value => specifiedRole = message.guild.roles.cache.get(value))
 		else specifiedRole = message.guild.roles.cache.get(roleID)
 		const specifiedVC = client.channels.cache.get(args[1])
@@ -74,11 +72,9 @@ client.on ("message", message => {
 			// store the given info and tell the user it succeeded
 
 			if (roleID=="clear") {
-				// vcrolestore.del(locID)
 				vcroledb.delete(locID)
 				resultMsg = `Voice channel role cleared successfully`
 			} else {
-				// vcrolestore.set(locID, roleID)
 				vcroledb.set(locID, roleID)
 				resultMsg = `Voice channel role set successfully to \`${specifiedRole.name}\``
 			}
