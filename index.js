@@ -112,49 +112,49 @@ client.on("voiceStateUpdate", (oldState, newState) => {
 	}
 	else return
 
-	// const roleData = vcrolestore.get()
-	// const locations = Object.keys(roleData)
-	vcroledb.list().then(keys => locations = keys)
 
-	if (leave) {
-		const channel = oldState.channel
+	vcroledb.list().then(locations => {
+
+		if (leave) {
+			const channel = oldState.channel
+			
+			if (locations.includes(channel.id)) {
+				// use a channel location
+				vcroledb.get(channel.id).then(roleID => {
+					const role = channel.guild.roles.cache.get(roleID)
+					newState.member.roles.remove(role)
+				})
+			}
 		
-		if (locations.includes(channel.id)) {
-			// use a channel location
-			// const roleID = roleData[channel.id]
-			vcroledb.get(channel.id).then(id => roleID = id)
-			const role = channel.guild.roles.cache.get(roleID)
-			newState.member.roles.remove(role)
+			if (locations.includes(channel.guild.id)) {
+				// use a guild location
+				vcroledb.get(channel.guild.id).then(roleID => {
+					const role = channel.guild.roles.cache.get(roleID)
+					newState.member.roles.remove(role)	
+				})
+			}
 		}
 	
-		if (locations.includes(channel.guild.id)) {
-			// use a guild location
-			// const roleID = roleData[channel.guild.id]
-			vcroledb.get(channel.guild.id).then(id => roleID = id)
-			const role = channel.guild.roles.cache.get(roleID)
-			newState.member.roles.remove(role)
-		}
-	}
-
-	if (join) {
-		const channel = newState.channel
-
-		if (locations.includes(channel.id)) {
-			// use a channel location
-			// const roleID = roleData[channel.id]
-			vcroledb.get(channel.id).then(id => roleID = id)
-			const role = channel.guild.roles.cache.get(roleID)
-			newState.member.roles.add(role)
-		}
+		if (join) {
+			const channel = newState.channel
 	
-		if (locations.includes(channel.guild.id)) {
-			// use a guild location
-			// const roleID = roleData[channel.guild.id]
-			vcroledb.get(channel.guild.id).then(id => roleID = id)
-			const role = channel.guild.roles.cache.get(roleID)
-			newState.member.roles.add(role)
+			if (locations.includes(channel.id)) {
+				// use a channel location
+				vcroledb.get(channel.id).then(roleID => {
+					const role = channel.guild.roles.cache.get(roleID)
+					newState.member.roles.add(role)
+				})
+			}
+		
+			if (locations.includes(channel.guild.id)) {
+				// use a guild location
+				vcroledb.get(channel.guild.id).then(roleID => {
+					const role = channel.guild.roles.cache.get(roleID)
+					newState.member.roles.add(role)
+				})
+			}
 		}
-	}
+	})
 })
 
 
