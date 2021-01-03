@@ -95,6 +95,8 @@ client.on ("message", message => {
 // detect when a member joins or leaves a voice channel, and give them the role if applicable
 client.on("voiceStateUpdate", (oldState, newState) => {
 
+	if (oldState.member.user.bot) return
+
 	if (oldState.channelID!=null && newState.channelID==null) {
 		join = false
 		leave = true
