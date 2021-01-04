@@ -154,9 +154,3 @@ client.on("voiceStateUpdate", (oldState, newState) => {
 		}
 	})
 })
-
-
-// webserver to keep alive
-const server = express()
-server.all("/keepalive", (req,res) => res.send("Bot woken"))
-server.listen(1218, ()=>console.log("server running"))
