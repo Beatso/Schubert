@@ -1,4 +1,3 @@
-const express = require("express")
 const Discord = require("discord.js")
 const Database = require("@replit/database")
 require("dotenv").config()
