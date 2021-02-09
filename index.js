@@ -5,7 +5,7 @@ require("dotenv").config()
 const client = new Discord.Client()
 const vcroledb = new Database()
 
-client.once ("ready", _ => {
+client.once ("ready", () => {
 	console.log("bot running"),
 	client.user.setActivity("beatso.tk/project/schubert", {type:"WATCHING"})
 })
