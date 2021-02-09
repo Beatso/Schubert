@@ -7,7 +7,10 @@ const vcroledb = new Database()
 
 client.once ("ready", () => {
 	console.log("bot running"),
-	client.user.setActivity("beatso.tk/project/schubert", {type:"WATCHING"})
+	(function startUpdatingStatus () {
+		client.user.setActivity(`${client.guilds.cache.size} servers`, { type: 'WATCHING' }).catch(console.error) // update status
+		setTimeout(() => startUpdatingStatus(), 3600000) // run again in an hour
+	})()
 })
 
 client.login(process.env.bottoken)
