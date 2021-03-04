@@ -7,7 +7,7 @@ const client = new Discord.Client()
 client.once ("ready", () => {
 	console.log("bot running"),
 	(function startUpdatingStatus () {
-		client.user.setActivity(`${client.guilds.cache.size} servers`, { type: 'WATCHING' }).catch(console.error) // update status
+		client.user.setActivity(`^help`, { type: 'WATCHING' }).catch(console.error) // update status
 		setTimeout(() => startUpdatingStatus(), 3600000) // run again in an hour
 	})()
 })
@@ -91,6 +91,35 @@ client.on ("message", message => {
 			message.channel.send(`Setting the role failed for the following reason: ${result.reason}`)
 		}
 
+	} else if (command == "help") {
+		// message.channel.send("Read this for info on how to use the bot: <https://github.com/Beatso/Schubert#readme>\nIf you need further help, join the support server: https://discord.gg/bNcZjFe")
+		message.channel.send({ embed: {
+			title: 'Need help?',
+			description: 'To configure a voice channel role, type `^vcrole @role [voice-channel-id]`. you can also use the role ID. If `voice-channel-id` is omitted, the role will be for all voice channels in the server.\n\nTo clear a voice channel role type `^vcrole clear [voice-channel-id]`. If `voice-channel-id` is omitted, the role will be for all voice channels in the server.\n\nIf you\' like further help, join the [support server](https://discord.gg/bNcZjFe).',
+			fields: [
+				{
+					name: 'Support Server',
+					value: '[Invite](https://discord.gg/bNcZjFe)',
+					inline: true
+				},
+				{
+					name: 'Bugs & Suggestions',
+					value: '[Issue Tracker](https://github.com/Beatso/Schubert/issues/new)',
+					inline: true
+				},
+				{
+					name: 'Vote',
+					value: '[Top.gg](https://top.gg/bot/777514345461448714/vote)',
+					inline: true
+				},
+				{
+					name: 'Source Code',
+					value: '[GitHub](https://github.com/Beatso/Schubert)',
+					inline: true
+				}
+			],
+			color: message.guild.me.displayHexColor
+		}})
 	}
 
 })
