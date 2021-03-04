@@ -37,8 +37,6 @@ client.on ("message", message => {
 			roleID = args[0]
 		}
 		
-		console.log(roleID)
-
 		// get channel/guild id
 		let argLoc = args[1]
 		if (argLoc==undefined) argLoc = "not given"
