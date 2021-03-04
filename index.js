@@ -1,9 +1,8 @@
 const Discord = require("discord.js")
-const Database = require("@replit/database")
+const vcroledb = require("quick.db")
 require("dotenv").config()
 
 const client = new Discord.Client()
-const vcroledb = new Database()
 
 client.once ("ready", () => {
 	console.log("bot running"),
@@ -26,6 +25,8 @@ client.on ("message", message => {
 	if (command=="vcrole") {
 		
 		// get role id
+		var roleID
+
 		if (args[0] == undefined) roleID = "not given"
 		else if (args[0] == "clear") roleID = "clear"
 		else if (args[0].startsWith("<@&") && args[0].endsWith(">") && args[0].length==22) {
@@ -36,6 +37,8 @@ client.on ("message", message => {
 			roleID = args[0]
 		}
 		
+		console.log(roleID)
+
 		// get channel/guild id
 		let argLoc = args[1]
 		if (argLoc==undefined) argLoc = "not given"
@@ -49,7 +52,7 @@ client.on ("message", message => {
 			locID = message.guild.id
 		}
 
-		if (roleID=="clear") vcroledb.get(locID).then(value => specifiedRole = message.guild.roles.cache.get(value))
+		if (roleID=="clear") specifiedRole = message.guild.roles.cache.get(vcroledb.get(locID))
 		else specifiedRole = message.guild.roles.cache.get(roleID)
 		const specifiedVC = client.channels.cache.get(args[1])
 	
@@ -113,46 +116,47 @@ client.on("voiceStateUpdate", (oldState, newState) => {
 	else return
 
 
-	vcroledb.list().then(locations => {
+	if (leave) {
+		const channel = oldState.channel
+		
+		if (vcroledb.has(channel.id)) {
+			// use a channel location
+			newState.member.roles.remove (
+				channel.guild.roles.cache.get (
+					vcroledb.get(channel.id)
+				)
+			)
+		}
+	
+		if (vcroledb.has(channel.guild.id)) {
+			// use a guild location
+			newState.member.roles.remove(
+				channel.guild.roles.cache.get(
+					vcroledb.get(channel.guild.id)
+				)
+			)	
+		}
+	}
 
-		if (leave) {
-			const channel = oldState.channel
-			
-			if (locations.includes(channel.id)) {
-				// use a channel location
-				vcroledb.get(channel.id).then(roleID => {
-					const role = channel.guild.roles.cache.get(roleID)
-					newState.member.roles.remove(role)
-				})
-			}
-		
-			if (locations.includes(channel.guild.id)) {
-				// use a guild location
-				vcroledb.get(channel.guild.id).then(roleID => {
-					const role = channel.guild.roles.cache.get(roleID)
-					newState.member.roles.remove(role)	
-				})
-			}
+	if (join) {
+		const channel = newState.channel
+
+		if (vcroledb.has(channel.id)) {
+			// use a channel location
+			newState.member.roles.add (
+				channel.guild.roles.cache.get (
+					vcroledb.get(channel.id)
+				)
+			)
 		}
 	
-		if (join) {
-			const channel = newState.channel
-	
-			if (locations.includes(channel.id)) {
-				// use a channel location
-				vcroledb.get(channel.id).then(roleID => {
-					const role = channel.guild.roles.cache.get(roleID)
-					newState.member.roles.add(role)
-				})
-			}
-		
-			if (locations.includes(channel.guild.id)) {
-				// use a guild location
-				vcroledb.get(channel.guild.id).then(roleID => {
-					const role = channel.guild.roles.cache.get(roleID)
-					newState.member.roles.add(role)
-				})
-			}
+		if (vcroledb.has(channel.guild.id)) {
+			// use a guild location
+			newState.member.roles.add (
+				channel.guild.roles.cache.get (
+					vcroledb.get(channel.guild.id)
+					)
+				)
 		}
-	})
+	}
 })
