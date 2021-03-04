@@ -9,7 +9,7 @@ To configure a voice channel role, type `^vcrole @role [voice-channel-id]`. you 
 
 To clear a voice channel role type `^vcrole clear [voice-channel-id]`. If `voice-channel-id` is omitted, the role will be for all voice channels in the server.
 
-If you ever need a link back to this page, use the command `^help`.
+If you ever need to see these instructions, use the command `^help`.
 
 ## Links
 
