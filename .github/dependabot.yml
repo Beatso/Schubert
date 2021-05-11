@@ -4,9 +4,3 @@ updates:
   directory: "/"
   schedule:
     interval: daily
-    timezone: Europe/London
-  open-pull-requests-limit: 10
-  ignore:
-  - dependency-name: discord.js
-    versions:
-    - 12.5.2
