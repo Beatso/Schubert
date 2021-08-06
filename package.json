@@ -10,7 +10,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "discord.js": "^12.4.1",
+    "discord.js": "^13.0.0",
     "dotenv": "^9.0.2",
     "quick.db": "^7.1.3"
   }
