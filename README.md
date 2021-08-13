@@ -18,3 +18,5 @@ If you ever need to see these instructions, use the command `^help`.
 [Top.gg](https://top.gg/bot/777514345461448714)  
 [Discord Bots](https://discord.bots.gg/bots/777514345461448714)  
 [Support Server](https://www.beatso.tk/discord)
+
+[![DigitalOcean Referral Badge](https://web-platforms.sfo2.digitaloceanspaces.com/WWW/Badge%203.svg)](https://www.digitalocean.com/?refcode=3913ec13fa90&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge)
