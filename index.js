@@ -95,7 +95,7 @@ client.on ("message", message => {
 		// message.channel.send("Read this for info on how to use the bot: <https://github.com/Beatso/Schubert#readme>\nIf you need further help, join the support server: https://discord.gg/bNcZjFe")
 		message.channel.send({ embed: {
 			title: 'Need help?',
-			description: 'To configure a voice channel role, type `^vcrole @role [voice-channel-id]`. you can also use the role ID. If `voice-channel-id` is omitted, the role will be for all voice channels in the server.\n\nTo clear a voice channel role type `^vcrole clear [voice-channel-id]`. If `voice-channel-id` is omitted, the role will be for all voice channels in the server.\n\nIf you\'d like further help, join the [support server](https://discord.gg/bNcZjFe).\n\nThis bot is hosted by DigitalOcean. Use [this link](https://m.do.co/c/3913ec13fa90) for $100 free credit on DigitalOcean.',
+			description: 'To configure a voice channel role, type `^vcrole @role [voice-channel-id]`. you can also use the role ID. If `voice-channel-id` is omitted, the role will be for all voice channels in the server.\n\nTo clear a voice channel role type `^vcrole clear [voice-channel-id]`. If `voice-channel-id` is omitted, the role will be for all voice channels in the server.\n\nIf you\'d like further help, join the [support server](https://discord.gg/bNcZjFe).\n\nThis bot is hosted by DigitalOcean. Sign up with [this link](https://m.do.co/c/3913ec13fa90) for $100 free credit.',
 			fields: [
 				{
 					name: 'Support Server',
