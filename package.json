@@ -12,6 +12,6 @@
   "dependencies": {
     "discord.js": "^12.4.1",
     "dotenv": "^9.0.2",
-    "quick.db": "^7.1.3"
+    "quick.db": "^9.0.5"
   }
 }
